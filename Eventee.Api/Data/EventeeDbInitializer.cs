@@ -2,7 +2,7 @@
 
 namespace Eventee.Api.Data;
 
-public static class DbInitializer
+public static class EventeeDbInitializer
 {
     public static void Initialize(EventeeContext context)
     {
