@@ -6,7 +6,7 @@ namespace Eventee.Api.Controllers.Dtos
     {
         [Required]
         [MinLength(5)]
-        public string? UserName { get; set; }
+        public string? Name { get; set; }
 
         [EmailAddress]
         [Required]

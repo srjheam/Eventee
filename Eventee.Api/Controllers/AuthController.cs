@@ -64,18 +64,18 @@ namespace Eventee.Api.Controllers
         [Route("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDto model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.UserName);
+            var userExists = await _userManager.FindByNameAsync(model.Name);
             if (userExists != null)
                 return Conflict("User with the given username already exists.");
 
-            var user = new ApplicationIdentityUser { UserName = model.UserName, Email = model.Email };
+            var user = new ApplicationIdentityUser { UserName = model.Name, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 return StatusCode(StatusCodes.Status500InternalServerError, result.Errors);
 
-            var createdUser = await _userManager.FindByNameAsync(model.UserName);
+            var createdUser = await _userManager.FindByNameAsync(model.Name);
 
-            var eventeeUser = new User { Id = createdUser.Id, Name = createdUser.UserName, HostedGetTogethers = { }, SubscribedGetTogethers = { } };
+            var eventeeUser = new User { Id = createdUser.Id, Name = createdUser.UserName, Email = createdUser.Email, HostedGetTogethers = { }, SubscribedGetTogethers = { } };
 
             _eventeeContext.Add(eventeeUser);
             await _eventeeContext.SaveChangesAsync();
