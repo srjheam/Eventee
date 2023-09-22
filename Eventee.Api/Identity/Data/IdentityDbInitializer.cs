@@ -1,5 +1,4 @@
-﻿using Eventee.Api.Data;
-using Eventee.Api.Models;
+﻿using Eventee.Api.Identity.Models;
 
 namespace Eventee.Api.Identity.Data
 {
@@ -12,20 +11,12 @@ namespace Eventee.Api.Identity.Data
                 return;
             }
 
-            var users = new User[]
+            var users = new ApplicationIdentityUser[]
             {
                 // todo
             };
 
             context.Users.AddRange(users);
-            context.SaveChanges();
-
-            var getTogethers = new GetTogether[]
-            {
-                // todo
-            };
-
-            context.GetTogethers.AddRange(getTogethers);
             context.SaveChanges();
         }
     }

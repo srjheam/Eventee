@@ -12,5 +12,6 @@ public class ApplicationIdentityDbContext : IdentityDbContext<ApplicationIdentit
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        base.OnModelCreating(builder);
     }
 }
