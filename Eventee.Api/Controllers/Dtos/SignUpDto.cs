@@ -14,7 +14,6 @@ namespace Eventee.Api.Controllers.Dtos
 
         [Required]
         [MinLength(6)]
-        [RegularExpression("([0-9]{1,})")]
         public string? Password { get; set; }
     }
 }

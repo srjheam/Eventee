@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Eventee.Api.Models
 {
     public class GetTogether
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         [Required]
         [MinLength(50)]

@@ -10,7 +10,9 @@ public class EventeeProfile : Profile
     {
         CreateMap<GetTogether, GetTogetherDto>()
             .ForMember(dest => dest.HosterId, opt => opt.MapFrom(src => src.Hoster.Id));
+        CreateMap<GetTogetherDto, GetTogether>();
 
         CreateMap<User, UserDto>();
+        CreateMap<UserDto, User>();
     }
 }

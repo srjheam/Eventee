@@ -101,7 +101,7 @@ namespace Eventee.Api.Controllers
             if (found is not null)
                 return Conflict(new Response<string>("GetTogether with the given Id already exists."));
 
-            var hoster = await _context.Users.FindAsync(getTogetherDto.Id);
+            var hoster = await _context.Users.FindAsync(getTogetherDto.HosterId);
             if (hoster is null)
                 return NotFound(new Response<string>("User not found."));
 

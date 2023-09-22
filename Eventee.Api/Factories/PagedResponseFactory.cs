@@ -26,7 +26,7 @@ namespace Eventee.Api.Factories
             uriBuilder.Query = QueryStringSerializeObject(nextFilter);
             var nextUri = new Uri(uriBuilder.ToString());
 
-            var response = new PagedResponse<T>(children, filter.PageNumber, filter.Count, prevUri, nextUri);
+            var response = new PagedResponse<T>(children, prevUri, nextUri);
             return response;
         }
 
