@@ -10,8 +10,8 @@ namespace Eventee.Api.Data
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<GetTogether> GetTogethers { get; set; }
+        public DbSet<User> Users { get; set; } = null!;
+        public DbSet<GetTogether> GetTogethers { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -19,9 +19,10 @@ namespace Eventee.Api.Data
                 .HasMany(d => d.Subscribers)
                 .WithMany(d => d.SubscribedGetTogethers);
 
-            modelBuilder.Entity<GetTogether>()
-                .HasOne(d => d.Hoster)
-                .WithMany(d => d.HostedGetTogethers);
+            modelBuilder.Entity<User>()
+                .HasMany(d => d.HostedGetTogethers)
+                .WithOne(d => d.Hoster)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
