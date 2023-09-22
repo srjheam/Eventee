@@ -22,11 +22,11 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddDbContext<EventeeContext>(options =>
-    options.UseInMemoryDatabase("EventeeContext");
+    options.UseInMemoryDatabase("EventeeContext"));
   //options.UseSqlServer(builder.Configuration.GetConnectionString("EventeeContext")));
 
 builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
-    options.UseInMemoryDatabase("ApplicationIdentityDbContext");
+    options.UseInMemoryDatabase("ApplicationIdentityDbContext"));
 //options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationIdentityDbContext")));
 
 builder.Services.AddIdentity<ApplicationIdentityUser, IdentityRole>()
