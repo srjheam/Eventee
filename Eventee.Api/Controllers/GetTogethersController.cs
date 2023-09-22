@@ -54,10 +54,42 @@ namespace Eventee.Api.Controllers
 
             if (getTogether == null)
                 return NotFound();
-            
+
             var dto = _mapper.Map<GetTogetherDto>(getTogether);
 
             return Ok(new Response<GetTogetherDto>(dto));
+        }
+
+        // PUT: api/GetTogethers
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutGetTogether(int id, GetTogetherDto getTogetherDto)
+        {
+            if (id != getTogetherDto.Id)
+                return BadRequest();
+
+            var user = await _context.GetTogethers.FindAsync(getTogetherDto.Id);
+            if (user is null)
+                return NotFound();
+
+            var model = _mapper.Map<GetTogether>(getTogetherDto);
+
+            _context.Entry(model).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_context.GetTogethers.Any(e => e.Id == id))
+                    return NotFound();
+                else
+                    throw;
+            }
+
+            return NoContent();
+
         }
 
         // POST: api/GetTogethers
@@ -101,9 +133,6 @@ namespace Eventee.Api.Controllers
             if (getTogether is null)
                 return NotFound();
 
-            if (getTogether is null)
-                return NotFound();
-
             var dto = _mapper.Map<UserDto>(getTogether.Hoster);
 
             return Ok(new Response<UserDto>(dto));
@@ -136,7 +165,7 @@ namespace Eventee.Api.Controllers
                 .FirstOrDefaultAsync();
             if (getTogether is null)
                 return NotFound(new Response<string>("Get Together not found."));
-            
+
             var user = getTogether.Subscribers
                 .Where(s => s.Id == subscriberId)
                 .FirstOrDefault();
