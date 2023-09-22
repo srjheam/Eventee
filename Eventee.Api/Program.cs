@@ -3,11 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Eventee.Api.Identity.Data;
 using Eventee.Api.Identity.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Eventee.Api.Factories;
-using Eventee.Api.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +19,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddDbContext<EventeeContext>(options =>
     options.UseInMemoryDatabase("EventeeContext"));
-  //options.UseSqlServer(builder.Configuration.GetConnectionString("EventeeContext")));
+//options.UseSqlServer(builder.Configuration.GetConnectionString("EventeeContext")));
 
 builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
     options.UseInMemoryDatabase("ApplicationIdentityDbContext"));
@@ -48,11 +44,8 @@ builder.Services.AddSingleton<IPagedResponseFactory>(o =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 using (var scope = app.Services.CreateScope())
 {

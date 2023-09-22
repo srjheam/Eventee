@@ -37,7 +37,7 @@ namespace Eventee.Api.Controllers
         [Route("signin")]
         public async Task<IActionResult> SignIn([FromBody] SignInDto model)
         {
-            var user = await _userManager.FindByNameAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null || !(await _userManager.CheckPasswordAsync(user, model.Password)))
                 return Unauthorized();
 
@@ -64,9 +64,9 @@ namespace Eventee.Api.Controllers
         [Route("signup")]
         public async Task<IActionResult> SignUp([FromBody] SignUpDto model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.Name);
+            var userExists = await _userManager.FindByEmailAsync(model.Email);
             if (userExists != null)
-                return Conflict("User with the given username already exists.");
+                return Conflict("User with the given email already exists.");
 
             var user = new ApplicationIdentityUser { UserName = model.Name, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
