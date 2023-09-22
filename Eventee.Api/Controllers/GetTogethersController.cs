@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Eventee.Api.Data;
 using Eventee.Api.Models;
@@ -68,13 +63,19 @@ namespace Eventee.Api.Controllers
             if (id != getTogetherDto.Id)
                 return BadRequest();
 
-            var user = await _context.GetTogethers.FindAsync(getTogetherDto.Id);
-            if (user is null)
+            var getTogether = await _context.GetTogethers
+                .Where(e => e.Id == id)
+                .Include(e => e.Hoster)
+                .FirstOrDefaultAsync();
+            if (getTogether is null)
                 return NotFound();
 
-            var model = _mapper.Map<GetTogether>(getTogetherDto);
+            if (getTogether.Hoster.Id != getTogetherDto.HosterId)
+                return BadRequest();
 
-            _context.Entry(model).State = EntityState.Modified;
+            getTogether.Title = getTogetherDto.Title;
+            getTogether.ScheduleDate = getTogetherDto.ScheduleDate;
+            getTogether.Description = getTogetherDto.Description;
 
             try
             {
@@ -89,7 +90,6 @@ namespace Eventee.Api.Controllers
             }
 
             return NoContent();
-
         }
 
         // POST: api/GetTogethers
@@ -101,7 +101,12 @@ namespace Eventee.Api.Controllers
             if (found is not null)
                 return Conflict(new Response<string>("GetTogether with the given Id already exists."));
 
+            var hoster = await _context.Users.FindAsync(getTogetherDto.Id);
+            if (hoster is null)
+                return NotFound(new Response<string>("User not found."));
+
             var model = _mapper.Map<GetTogether>(getTogetherDto);
+            model.Hoster = hoster;
 
             _context.GetTogethers.Add(model);
             await _context.SaveChangesAsync();
